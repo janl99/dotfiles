@@ -1,22 +1,12 @@
 #!/usr/bin/env bash
 
-cd "$(dirname "${BASH_SOURCE}")";
-
 git pull origin master;
 
-function doIt() {
-	rsync --exclude ".git/" --exclude ".DS_Store" --exclude "bootstrap.sh" \
-		--exclude "README.md" --exclude "LICENSE-MIT.txt" -avh --no-perms . ~;
-	source ~/.bash_profile;
-}
+cp .bash_aliases ~/.bash_aliases
+cp .gitattributes ~/.gitattributes
+cp .gitconfig ~/.gitconfig
+cp .gitignore ~/.gitignore
+cp .gvimrc ~/.gvimrc
+cp .vimrc ~/.vimrc
+cp -r .vim/ ~/.vim
 
-if [ "$1" == "--force" -o "$1" == "-f" ]; then
-	doIt;
-else
-	read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
-	echo "";
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		doIt;
-	fi;
-fi;
-unset doIt;
