@@ -1,0 +1,6 @@
+[submodule "vim_colorschemes/colorsbox"]
+	path = vim_colorschemes/colorsbox
+	url = https://github.com/mkarmona/colorsbox.git
+[submodule "vim_plugins/Vundle.vim"]
+	path = vim_plugins/Vundle.vim
+	url = https://github.com/VundleVim/Vundle.vim.git
