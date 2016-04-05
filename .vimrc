@@ -1,304 +1,427 @@
-map <F9> :call SaveInputData()<CR>
-func! SaveInputData()
-	exec "tabnew"
-	exec 'normal "+gP'
-	exec "w! /tmp/input_data"
-endfunc
+" Init
+" {{{
+  "Init Vundle
+  " {{{
+      filetype off                  " required
+
+      " set the runtime path to include Vundle and initialize
+      set rtp+=~/.vim/bundle/Vundle.vim
+      call vundle#begin()
+      " alternatively, pass a path where Vundle should install plugins
+
+      " let Vundle manage Vundle, required
+      Bundle 'VundleVim/Vundle.vim'
+      Bundle 'mattn/emmet-vim'
+      Bundle 'scrooloose/nerdcommenter'
+      Bundle 'scrooloose/nerdtree'
+      Bundle 'ybian/smartim'
+      Bundle 'scrooloose/syntastic'
+      Bundle 'MarcWeber/vim-addon-mw-utils'
+      Bundle 'cakebaker/scss-syntax.vim'
+      Bundle 'jistr/vim-nerdtree-tabs'
+      Bundle 'tpope/vim-commentary'
+      Bundle 'tpope/vim-endwise'
+      Bundle 'tpope/vim-surround'
+      Bundle 'tpope/vim-fugitive'
+      Bundle 'tpope/vim-repeat'
+      Bundle 'itchyny/lightline.vim'
+      Bundle 'jiangmiao/auto-pairs'
+      Bundle 'elzr/vim-json'
+      Bundle 'junegunn/goyo.vim'
+      Bundle 'rking/ag.vim'
+      Bundle 'vim-ruby/vim-ruby'
+      Bundle 'tpope/vim-bundler'
+      Bundle 'tpope/vim-rails'
+      Bundle 'tpope/vim-rake'
+      Bundle 'pangloss/vim-javascript'
+      Bundle 'kchmck/vim-coffee-script'
+      Bundle 'tpope/vim-haml'
+      Bundle 'tpope/vim-cucumber'
+      Bundle 'majutsushi/tagbar'
+      Bundle 'ecomba/vim-ruby-refactoring'
+      Bundle 'vim-scripts/matchit.zip'
+      Bundle 'terryma/vim-expand-region'
+      Bundle 'nathanaelkane/vim-indent-guides'
+      Bundle 'kana/vim-textobj-user'
+      Bundle 'nelstrom/vim-textobj-rubyblock'
+      Bundle 'austintaylor/vim-indentobject'
+      Bundle 'lucapette/vim-textobj-underscore'
+      Bundle 'thoughtbot/vim-rspec'
+      Bundle 'tpope/vim-dispatch'
+      Bundle 'wting/rust.vim'
+      Bundle 'mxw/vim-jsx'
+      Bundle "justinj/vim-react-snippets"
+      Bundle "tomtom/tlib_vim"
+      Bundle 'msanders/snipmate.vim'
+      Bundle 'kien/ctrlp.vim'
+      Bundle 'jdkanani/vim-material-theme'
+      Bundle 'ngmy/vim-rubocop'
+
+      call vundle#end()            " required
+      filetype plugin indent on    " required
+  " }}}
+  set shell=/bin/bash
+  set nocompatible
+  set hidden
+  syntax on
+  set encoding=utf-8
+  set clipboard=unnamed
+" }}}
+  runtime macros/matchit.vim
+" Settings
+" {{{
+"   Basic {{{
+      augroup reload_vimrc " {
+        autocmd!
+        autocmd BufWritePost $MYVIMRC source $MYVIMRC
+      augroup END " }
+
+      set backspace=indent,eol,start " make backspace a more flexible
+      let loaded_matchparen=1 " match paranthesis
+      set backup " create backup
+      set backupdir=~/.vim/tmp/backup " where to put backup files
+      set directory=~/.vim/tmp/swap " directory to place swap files in
+      "set undodir=~/.vim/tmp/undo " directory to place undo files in
+      "set undofile " create undo file
+      set mouse=a " use mouse for everything
+      set equalalways " split windows equally
+      set splitright splitbelow " new splits right from current and other below
+      set autoread " supress warnings
+      set wildmenu " wildmenu when autocomplting option
+      set wildmode=full " complete the full match, this is default behaviour
+      set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png " there files will be ignored when completing in wild menu
+      " set clipboard+=unnamed,unnamedplus,autoselect " share clipboard
+      set history=1000
+      set tags=.tags;/ " save tags generated for files in current working directory
+      set ttyfast " i got a fast terminal!
+      set ttimeoutlen=50  " Make Esc work faster
+      set timeoutlen=200 " Make Leader work faster
+
+    " }}}
+
+    " UI {{{
+      set background=dark
+      colorscheme colorsbox-material " Color scheme
+
+      set nowrap
+      set tabstop=4 " when there's tab, it should be indented by 4 spaces
+      set shiftwidth=2 " Number of spaces to use for each step of (auto)indent
+      set shiftround " round the indent to shiftwidth (when at 3 spaces, and I hit > go to 4, not 5)
+      set autoindent
+      set infercase " case inferred by default, used for autocompletition in insert mode and so on..
+      set t_Co=256
+
+      set ignorecase " ignore case when searching
+      set hlsearch   " highlight search matches
+      set incsearch " search as you type
+      set gdefault  " global matching is default
+      set smartcase " use smartcase, when search query starts with Uppercase, turn off case insensitive search
+
+      "set list " show trailing characters
+      "set listchars=tab:▸\ ,trail:¬,extends:❯,precedes:❮,nbsp:~ " it show ¬ character when as you type, fill free to comment out set list
+
+      set number " set line numbering
+      set novisualbell " do not blink
+      set lazyredraw " get faster, redraw only when it's needed
+      set nostartofline
+      set linespace=0
+      let c_no_trail_space_error = 1 " see c errors
+      let java_space_errors = 1 " see java errors
+      set showcmd " show the command being typed
+      set ruler " always show current position
+      set scrolloff=5 " Keep 5 lines (top/bottom) for scop
+      set sidescrolloff=10 " Keep 10 lines at the size
+      set showmode " show the current mode (Insert, Visual..)
+
+      set expandtab " no real tabs!
+      set wrap " wrap lines, we dont want long lines
+      set showbreak=↪ " character show when wrapping line
+
+      " set foldenable " folding text into clusters (+) according to  {{{ }}} or comments for example.
+      " set foldmethod=manual " default options, we create fold manually.
+      set fdm=indent
+      set showmatch " when use insert bracket, briefly jump to matching one (i like it, but i might be annoying)
+
+      set infercase " case inferred by default
+      set shiftround " round the indent to shiftwidth (when at 3 spaces, and I hit > go to 4, not 5)
+      set shiftwidth=2 " auto-indent amount when using >> <<
+      set softtabstop=2 " when hitting tab or backspace, how many spaces should a tab be (see expandtab)
+      set tabstop=4 " real tabs should be 4, and they will show with set list on
+
+      set completeopt=longest,menu,preview
+      " }}}
+
+    " Advanced macros
+    " {{{
+
+      " Cursor highlight
+      :hi CursorLine   cterm=NONE ctermbg=8
+      :hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white
+      set cursorline
+
+      "improve autocomplete menu color
+      highlight Pmenu ctermbg=238
+      " }}}
+      "
+
+      " Removes trailing spaces
+      function! TrimWhiteSpace()
+        if !&binary && &filetype != 'diff'
+          normal mz
+          normal Hmy
+          %s/^\s\+$//e
+          normal 'yz<CR>
+          normal `z
+        endif
+      endfunction
+
+      " Filter and trim whitespaces
+      autocmd FileWritePre * :call TrimWhiteSpace()
+      autocmd FileAppendPre * :call TrimWhiteSpace()
+      autocmd FilterWritePre * :call TrimWhiteSpace()
+      autocmd BufWritePre * :call TrimWhiteSpace()
+
+      " Use relative numbering in insert mode
+      autocmd InsertEnter * :set relativenumber
+      autocmd InsertLeave * :set number
+
+    "}}}
+
+    " Binding
+    " {{{
+    " Map leader
+      let mapleader = "\<Space>" " used for lot of stuff, feel free to change it.
+
+      " Open all folds
+      nnoremap <space> :%foldopen<CR>
+
+      nnoremap <leader>q :q<CR>
+      nnoremap <leader>w :w<CR>
+      nnoremap <leader>x :x<CR>
+      nnoremap <Leader>qq :q!<CR>
+
+      " Quickly edit/reload the vimrc file
+      nmap <silent> <leader>ev :e $MYVIMRC<CR>
+      nmap <silent> <leader>so :so $MYVIMRC<CR>
+
+      " Leader shortcuts for Rails commands
+      map <Leader>m :Emodel 
+      map <Leader>c :Econtroller 
+      map <Leader>v :Eview 
+      map <Leader>u :Eunittest 
+      " map <Leader>f :Rfunctionaltest 
+      map <Leader>sm :RSmodel 
+      map <Leader>sc :RScontroller 
+      map <Leader>sv :RSview 
+      map <Leader>su :RSunittest 
+      " map <Leader>sf :RSfunctionaltest 
+
+      nmap <Leader><Leader> V
+
+      map <leader>cmd :!
+
+      " convenient window switching
+      map <C-h> <C-w>h
+      map <C-j> <C-w>j
+      map <C-k> <C-w>k
+      map <C-l> <C-w>l
+
+      " open horizontal  split and switch to it
+      nnoremap <leader>h :split<CR>
+
+      " run ctags silently
+      map <leader>g :Dispatch ctags -R . &<CR>
+
+      " reformat whole file
+      nnoremap <leader>= ggVG=
+
+      " use :w!! to write to a file using sudo if you forgot to 'sudo vim file'
+      " (it will prompt for sudo password when writing)
+      cmap w!! %!sudo tee > /dev/null %
+
+      " upper/lower word
+      nmap <leader>uc mQviwU`Q
+      nmap <leader>lc mQviwu`Q
+
+      " upper/lower first char of word
+      nmap <leader>wu mQgewvU`Q
+      nmap <leader>wl mQgewvu`Q
+
+      let g:vimrubocop_keymap = 0
+      nmap <Leader>r :RuboCop<CR>
+
+      " Swap two words
+      nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
+
+      " Map the arrow keys to be based on display lines, not physical lines
+      map <Down> gj
+      map <Up> gk
+
+      " Move line up and down
+      nnoremap ∆ :m .+1<CR>==
+      nnoremap ˚ :m .-2<CR>==
+      inoremap ∆ <Esc>:m .+1<CR>==gi
+      inoremap ˚ <Esc>:m .-2<CR>==gi
+      vnoremap ∆ :m '>+1<CR>gv=gv
+      vnoremap ˚ :m '<-2<CR>gv=gv
+
+      " expand region
+      vmap v <Plug>(expand_region_expand)
+      vmap <C-v> <Plug>(expand_region_shrink)
+   " }}}
+
+    " Filetypes
+    " {{{
+
+      " HTML, XML {{{
+      augroup FTHtml
+        au!
+        autocmd FileType html,xhtml,wml,cf      setlocal ai et sta sw=2 sts=2 " set indent size and stuff
+        autocmd FileType xml,xsd,xslt           setlocal ai et sta sw=2 sts=2 ts=2
+        autocmd FileType html setlocal iskeyword+=~
+
+      augroup END
+
+      " CSS, SCSS {{{
+      augroup FTCss
+        au!
+        au BufRead,BufNewFile *.scss.erb set ft=scss  " when erb-ing sccs, use scss code highlighting
+        autocmd FileType css,scss  silent! setlocal omnifunc=csscomplete#CompleteCSS " autocomplete function
+        autocmd FileType css,scss  setlocal iskeyword+=-
+        autocmd FileType css,scss   setlocal ai et sta sw=2 sts=2
+      augroup END
+      " }}}
+
+      " }}}
+      " Ruby {{{
+      augroup FTRuby
+        au!
+        autocmd FileType eruby,yaml,ruby        setlocal ai et sta sw=2 sts=2
+        autocmd BufNewFile,BufRead *.html.erb   set filetype=eruby.html  " load html snippets along with erb
+        autocmd FileType ruby,eruby             let g:rubycomplete_rails = 1
+        autocmd FileType ruby,eruby             let g:rubycomplete_classes_in_global=1
+        autocmd FileType ruby,eruby             let g:rubycomplete_buffer_loading = 1
+      augroup END
+      " }}}
+
+      " Coffescript
+      " {{{
+      au BufNewFile,BufReadPost *.coffee setl sw=2 expandtab
+      "}}}
+
+      augroup C
+        au!
+        ""autocmd FileType c,cpp,h,hpp     colorscheme molokai
+      augroup END
+
+      " Git {{{
+      augroup FTGit
+        au!
+        autocmd FileType git,gitcommit setlocal foldmethod=syntax foldlevel=1
+        autocmd FileType gitcommit setlocal spell
+      augroup END
+      " }}}
 
 
+    " }}}
 
+    " Plugins
+    " {{{
 
-"colorscheme torte
-"colorscheme murphy
-"colorscheme desert 
-"colorscheme desert 
-"colorscheme elflord
-colorscheme ron
+      " Html5 plugin
+      " {{{
+      let g:html5_event_handler_attributes_complete = 0
+      let g:html5_rdfa_attributes_complete = 0
+      let g:html5_microdata_attributes_complete = 0
+      let g:html5_aria_attributes_complete = 0
+      " }}}
+      "
 
-"set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
-"set termencoding=utf-8
-"set encoding=utf-8
-"set fileencodings=ucs-bom,utf-8,cp936
-"set fileencoding=utf-8
+      imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 显示相关  
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-winpos 5 5          " 设定窗口位置  
-"set lines=40 columns=155    " 设定窗口大小  
-"set go=             " 不要图形按钮  
-"color asmanian2     " 设置背景主题  
-"set guifont=Courier_New:h10:cANSI   " 设置字体  
-syntax on           " 语法高亮  
-autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-autocmd InsertEnter * se cul    " 用浅色高亮当前行  
-set ruler           " 显示标尺  
-set showcmd         " 输入的命令显示出来，看的清楚些  
-"set cmdheight=1     " 命令行（在状态行下）的高度，设置为1  
-"set whichwrap+=<,>,h,l   " 允许backspace和光标键跨越行边界(不建议)  
-"set scrolloff=3     " 光标移动到buffer的顶部和底部时保持3行距离  
-set novisualbell    " 不要闪烁(不明白)  
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
-set laststatus=1    " 启动显示状态行(1),总是显示状态行(2)  
-set foldenable      " 允许折叠  
-set foldmethod=manual   " 手动折叠  
-"set background=dark "背景使用黑色 
-set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限  
-" 显示中文帮助
-if version >= 603
-	set helplang=cn
-	set encoding=utf-8
-endif
-" 设置配色方案
-"colorscheme murphy
-"字体 
-"if (has("gui_running")) 
-"   set guifont=Bitstream\ Vera\ Sans\ Mono\ 10 
-"endif 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""新文件标题
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"新建.c,.h,.sh,.java文件，自动插入文件头 
-autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java exec ":call SetTitle()" 
-""定义函数SetTitle，自动插入文件头 
-func SetTitle() 
-	"如果文件类型为.sh文件 
-	if &filetype == 'sh' 
-		call setline(1,"\#########################################################################") 
-		call append(line("."), "\# File Name: ".expand("%")) 
-		call append(line(".")+1, "\# Author: janl") 
-		call append(line(".")+2, "\# mail: janl99@163.com") 
-		call append(line(".")+3, "\# Created Time: ".strftime("%c")) 
-		call append(line(".")+4, "\#########################################################################") 
-		call append(line(".")+5, "\#!/bin/bash") 
-		call append(line(".")+6, "") 
-	else 
-		call setline(1, "/*************************************************************************") 
-		call append(line("."), "	> File Name: ".expand("%")) 
-		call append(line(".")+1, "	> Author: janl") 
-		call append(line(".")+2, "	> Mail: janl99@163.com ") 
-		call append(line(".")+3, "	> Created Time: ".strftime("%c")) 
-		call append(line(".")+4, " ************************************************************************/") 
-		call append(line(".")+5, "")
-	endif
-	if &filetype == 'cpp'
-		call append(line(".")+6, "#include<iostream>")
-		call append(line(".")+7, "using namespace std;")
-		call append(line(".")+8, "")
-	endif
-	if &filetype == 'c'
-		call append(line(".")+6, "#include<stdio.h>")
-		call append(line(".")+7, "")
-	endif
-	"	if &filetype == 'java'
-	"		call append(line(".")+6,"public class ".expand("%"))
-	"		call append(line(".")+7,"")
-	"	endif
-	"新建文件后，自动定位到文件末尾
-	autocmd BufNewFile * normal G
-endfunc 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"键盘命令
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+      " vim-javascript
+      " {{{
+      let g:html_indent_inctags = "html,body,head,tbody"
+      let g:html_indent_script1 = "inc"
+      let g:html_indent_style1 = "inc"
+      " }}}
 
-nmap <leader>w :w!<cr>
-nmap <leader>f :find<cr>
+      " Statusline
+      " {{{
+      set laststatus=2
+      " }}}
 
-" 映射全选+复制 ctrl+a
-map <C-A> ggVGY
-map! <C-A> <Esc>ggVGY
-map <F12> gg=G
-" 选中状态下 Ctrl+c 复制
-vmap <C-c> "+y
-"去空行  
-nnoremap <F2> :g/^\s*$/d<CR> 
-"比较文件  
-nnoremap <C-F2> :vert diffsplit 
-"新建标签  
-map <M-F2> :tabnew<CR>  
-"列出当前目录文件  
-map <F3> :tabnew .<CR>  
-"打开树状文件目录  
-map <C-F3> \be  
-"C，C++ 按F5编译运行
-map <F5> :call CompileRunGcc()<CR>
-func! CompileRunGcc()
-	exec "w"
-	if &filetype == 'c'
-		exec "!g++ % -o %<"
-		exec "! ./%<"
-	elseif &filetype == 'cpp'
-		exec "!g++ % -o %<"
-		exec "! ./%<"
-	elseif &filetype == 'java' 
-		exec "!javac %" 
-		exec "!java %<"
-	elseif &filetype == 'sh'
-		:!./%
-	elseif &filetype == 'py'
-		exec "!python %"
-		exec "!python %<"
-	endif
-endfunc
-"C,C++的调试
-map <F8> :call Rungdb()<CR>
-func! Rungdb()
-	exec "w"
-	exec "!g++ % -g -o %<"
-	exec "!gdb ./%<"
-endfunc
+      " Gist
+      " {{{
+      let g:gist_clip_command = 'xclip -selection clipboard'
+      let g:gist_detect_filetype = 1
+      let g:gist_open_browser_after_post = 1
+      let g:gist_browser_command = 'google-chrome %URL% &' " NOTE: use your browser!
+      let g:gist_show_privates = 1
+      " }}}
 
+      " supertab {{{
+      let g:SuperTabDefaultCompletionType = 'context'
+      let g:SuperTabContextDefaultCompletionType = '<c-n>'
+      " }}}
 
+      " syntastic {{{
+      nnoremap <C-E> :SyntasticCheck<CR>
+      let g:syntastic_auto_loc_list=1
+      let g:syntastic_enable_signs=1
+      let g:synastic_quiet_warnings=1
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""实用设置
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 设置当文件被改动时自动载入
-set autoread
-" quickfix模式
-autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
-"代码补全 
-set completeopt=preview,menu 
-"允许插件  
-filetype plugin on
-"共享剪贴板  
-set clipboard+=unnamed 
-"从不备份  
-set nobackup
-"make 运行
-:set makeprg=g++\ -Wall\ \ %
-"自动保存
-set autowrite
-set ruler                   " 打开状态栏标尺
-set cursorline              " 突出显示当前行
-set magic                   " 设置魔术
-set guioptions-=T           " 隐藏工具栏
-set guioptions-=m           " 隐藏菜单栏
-"set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\
-" 设置在状态行显示的信息
-set foldcolumn=0
-set foldmethod=indent 
-set foldlevel=3 
-set foldenable              " 开始折叠
-" 不要使用vi的键盘模式，而是vim自己的
-set nocompatible
-" 语法高亮
-set syntax=on
-" 去掉输入错误的提示声音
-set noeb
-" 在处理未保存或只读文件的时候，弹出确认
-set confirm
-" 自动缩进
-set autoindent
-set cindent
-" Tab键的宽度
-set tabstop=4
-" 统一缩进为4
-set softtabstop=4
-set shiftwidth=4
-" 不要用空格代替制表符
-set noexpandtab
-" 在行和段开始处使用制表符
-set smarttab
-" 显示行号
-set number
-" 历史记录数
-set history=1000
-"禁止生成临时文件
-set nobackup
-set noswapfile
-"搜索忽略大小写
-set ignorecase
-"搜索逐字符高亮
-set hlsearch
-set incsearch
-"行内替换
-set gdefault
-"编码设置
-set enc=utf-8
-set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
-"语言设置
-set langmenu=zh_CN.UTF-8
-set helplang=cn
-" 我的状态行显示的内容（包括文件类型和解码）
-"set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
-"set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
-" 总是显示状态行
-set laststatus=2
-" 命令行（在状态行下）的高度，默认为1，这里是2
-set cmdheight=2
-" 侦测文件类型
-filetype on
-" 载入文件类型插件
-filetype plugin on
-" 为特定文件类型载入相关缩进文件
-filetype indent on
-" 保存全局变量
-set viminfo+=!
-" 带有如下符号的单词不要被换行分割
-set iskeyword+=_,$,@,%,#,-
-" 字符间插入的像素行数目
-set linespace=0
-" 增强模式中的命令行自动完成操作
-set wildmenu
-" 使回格键（backspace）正常处理indent, eol, start等
-set backspace=2
-" 允许backspace和光标键跨越行边界
-set whichwrap+=<,>,h,l
-" 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
-set mouse=a
-set selection=exclusive
-set selectmode=mouse,key
-" 通过使用: commands命令，告诉我们文件的哪一行被改变过
-set report=0
-" 在被分割的窗口间显示空白，便于阅读
-set fillchars=vert:\ ,stl:\ ,stlnc:\
-" 高亮显示匹配的括号
-set showmatch
-" 匹配括号高亮的时间（单位是十分之一秒）
-set matchtime=1
-" 光标移动到buffer的顶部和底部时保持3行距离
-set scrolloff=3
-" 为C程序提供自动缩进
-set smartindent
-" 高亮显示普通txt文件（需要txt.vim脚本）
-au BufRead,BufNewFile *  setfiletype txt
-"自动补全
-:inoremap ( ()<ESC>i
-:inoremap ) <c-r>=ClosePair(')')<CR>
-":inoremap { {<CR>}<ESC>O
-":inoremap } <c-r>=ClosePair('}')<CR>
-:inoremap [ []<ESC>i
-:inoremap ] <c-r>=ClosePair(']')<CR>
-:inoremap " ""<ESC>i
-:inoremap ' ''<ESC>i
-function! ClosePair(char)
-	if getline('.')[col('.') - 1] == a:char
-		return "\<Right>"
-	else
-		return a:char
-	endif
-endfunction
-filetype plugin indent on 
-"打开文件类型检测, 加了这句才可以用智能补全
-set completeopt=longest,menu
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+      " }}}
 
+      " Rubycomplete {{{
+      let g:rubycomplete_rails=1
+      let g:rubycomplete_classes_in_global=1
+      let g:rubycomplete_buffer_loading=1
+      let g:rubycomplete_include_object=1
+      let g:rubycomplete_include_objectspace=1
+      " }}}
 
+      " NERDTree {{{
+      nnoremap <TAB> :NERDTreeToggle<CR>
+      nmap <leader>1 :NERDTreeFind<CR>
+      let g:NERDTreeMinimalUI=1
+      let g:NERDTreeDirArrows=1
+      let g:NERTreeHighlightCursorLine=1
+      "}}}
+      "
 
+      " ag {{{
+      let g:agprg="ag --column"
+      " start ack search, (using ACK tool, like grep but for source code)
+      nnoremap <leader>a :Ag 
+      " }}}
 
+      " RSpec.vim mappings
+      let g:rspec_command = "Dispatch rspec {spec}"
+      let g:rspec_runner = "os_x_iterm"
 
+      map <Leader>t :call RunCurrentSpecFile()<CR>
+      map <Leader>s :call RunNearestSpec()<CR>
+      map <Leader>l :call RunLastSpec()<CR>
+      " map <Leader>a :call RunAllSpecs()<CR>
+      map T :A<CR>
 
-"NERDtee设定
-let NERDChristmasTree=1
-let NERDTreeAutoCenter=1
-let NERDTreeBookmarksFile=$VIM.'\Data\NerdBookmarks.txt'
-let NERDTreeMouseMode=2
-let NERDTreeShowBookmarks=1
-let NERDTreeShowFiles=1
-let NERDTreeShowHidden=1
-let NERDTreeShowLineNumbers=1
-let NERDTreeWinPos='left'
-let NERDTreeWinSize=31
-nnoremap f :NERDTreeToggle
-map <F7> :NERDTree<CR>  
+      nmap <Leader>tb :TagbarToggle<CR>
+
+      nmap <Leader>z :Start<CR>
+    " GUI setting
+    " {{{
+    " Under the Mac(MacVim)
+    if has("gui_macvim")
+      set guifont=Menlo\ Regular:h18
+      "remove toolbar
+      set guioptions-=T
+      set showtabline=1
+      " remove scrollbars
+      set guioptions-=L
+      set guioptions-=r
+
+      set fullscreen fullscreen
+    endif
+    " }}}
+" }}}
