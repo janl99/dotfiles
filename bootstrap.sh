@@ -14,10 +14,10 @@ echo "please wait copying .gitignore file to ~/ dir."
 cp -l .gitignore ~/.gitignore
 
 echo "please wait Creating .vim and sub folders. " 
-mkdir ~/.vim/colors;
-mkdir ~/.vim/bundle;
-mkdir ~/.vim/tmp/backup;
-mkdir ~/.vom/tmp/swap;
+mkdir -p ~/.vim/colors;
+mkdir -p ~/.vim/bundle;
+mkdir -p ~/.vim/tmp/backup;
+mkdir -p ~/.vim/tmp/swap;
 
 echo "please wait copying vim colorscheme filess to ~/.vim/colors/ dir."
 cp -l vim_colorschemes/colorsbox/colors/colorsbox-material.vim ~/.vim/colors/colorsbox-material.vim 
@@ -35,4 +35,4 @@ echo "please wait to install vim plugins. "
 vim +PluginInstall +qall
 
 echo "please wait recuore .bashrc to config file to use."
-source .bashrc
+source ~/.bashrc
