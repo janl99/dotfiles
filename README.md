@@ -11,7 +11,14 @@
 4. .gvimrc          // gvim config file.
 5. .vimrc           // vim config file.
 6. .vim             // .vim folder for vim plugins and colorschemes.
-
+# For plugins 
+[submodule "vim_plugins/Vundle.vim"]
+	path = vim_plugins/Vundle.vim
+	url = https://github.com/VundleVim/Vundle.vim.git
+# For Colorschemes 
+[submodule "vim_colorschemes/colorsbox"]
+	path = vim_colorschemes/colorsbox
+	url = https://github.com/mkarmona/colorsbox.git
 
 # For Use it 
 
