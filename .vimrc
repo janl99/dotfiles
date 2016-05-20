@@ -56,6 +56,7 @@
       Bundle 'kien/ctrlp.vim'
       Bundle 'jdkanani/vim-material-theme'
       Bundle 'ngmy/vim-rubocop'
+      Bundle 'vimim/vimim'
 
       call vundle#end()            " required
       filetype plugin indent on    " required
@@ -411,9 +412,11 @@
       nmap <Leader>z :Start<CR>
     " GUI setting
     " {{{
-    " Under the Mac(MacVim)
-    if has("gui_macvim")
-      set guifont=Menlo\ Regular:h18
+    " Under the GUI 
+    if has("gui_running")
+      set guifont=Inconsolata\ 10
+      set guifontwide=幼圆\ 10:cGB2312
+      "set guioptions-=m
       "remove toolbar
       set guioptions-=T
       set showtabline=1
@@ -421,7 +424,11 @@
       set guioptions-=L
       set guioptions-=r
 
-      set fullscreen fullscreen
+      "full screen
+      function! ToggleFullScreen()
+        call system("wmctrl -r :ACTIVE: -b toggle,fullscreen")
+      endfunction
+      map <silent> <F11> : call ToggleFullScreen()<CR>
     endif
     " }}}
 " }}}
