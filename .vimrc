@@ -10,9 +10,11 @@
       " alternatively, pass a path where Vundle should install plugins
 
       " let Vundle manage Vundle, required
+      " Plugin auto management.
       Bundle 'VundleVim/Vundle.vim'
       Bundle 'mattn/emmet-vim'
       Bundle 'scrooloose/nerdcommenter'
+      " dir tree plugin
       Bundle 'scrooloose/nerdtree'
       Bundle 'ybian/smartim'
       Bundle 'scrooloose/syntastic'
@@ -41,6 +43,7 @@
       Bundle 'ecomba/vim-ruby-refactoring'
       Bundle 'vim-scripts/matchit.zip'
       Bundle 'terryma/vim-expand-region'
+      " code indent style plugin
       Bundle 'nathanaelkane/vim-indent-guides'
       Bundle 'kana/vim-textobj-user'
       Bundle 'nelstrom/vim-textobj-rubyblock'
@@ -56,7 +59,8 @@
       Bundle 'kien/ctrlp.vim'
       Bundle 'jdkanani/vim-material-theme'
       Bundle 'ngmy/vim-rubocop'
-      Bundle 'vimim/vimim'
+      " input mathod plugin for chinese
+      Bundle 'vimim/vimim' 
 
       call vundle#end()            " required
       filetype plugin indent on    " required
@@ -72,7 +76,7 @@
 " Settings
 " {{{
 "   Basic {{{
-      augroup reload_vimrc " {
+      augrou reload_vimrc " {
         autocmd!
         autocmd BufWritePost $MYVIMRC source $MYVIMRC
       augroup END " }
@@ -105,8 +109,10 @@
       colorscheme colorsbox-material " Color scheme
 
       set nowrap
-      set tabstop=4 " when there's tab, it should be indented by 4 spaces
-      set shiftwidth=2 " Number of spaces to use for each step of (auto)indent
+      "set tabstop=4 " when there's tab, it should be indented by 4 spaces
+      "set expandtab " when imput tab ,it should be convert to 4 spaces
+      "set softtabstop=4
+      "set shiftwidth=2 " Number of spaces to use for each step of (auto)indent
       set shiftround " round the indent to shiftwidth (when at 3 spaces, and I hit > go to 4, not 5)
       set autoindent
       set infercase " case inferred by default, used for autocompletition in insert mode and so on..
@@ -146,7 +152,7 @@
       set infercase " case inferred by default
       set shiftround " round the indent to shiftwidth (when at 3 spaces, and I hit > go to 4, not 5)
       set shiftwidth=2 " auto-indent amount when using >> <<
-      set softtabstop=2 " when hitting tab or backspace, how many spaces should a tab be (see expandtab)
+      set softtabstop=4 " when hitting tab or backspace, how many spaces should a tab be (see expandtab)
       set tabstop=4 " real tabs should be 4, and they will show with set list on
 
       set completeopt=longest,menu,preview
@@ -274,14 +280,22 @@
     " Filetypes
     " {{{
 
+      " Python {{{
+      augroup FTPython
+        au!
+        autocmd FileType python                 setlocal ai et sta sw=4 sts=4 ts=4
+      augroup END
+
+      " }}} 
+
       " HTML, XML {{{
       augroup FTHtml
         au!
         autocmd FileType html,xhtml,wml,cf      setlocal ai et sta sw=2 sts=2 " set indent size and stuff
         autocmd FileType xml,xsd,xslt           setlocal ai et sta sw=2 sts=2 ts=2
         autocmd FileType html setlocal iskeyword+=~
-
       augroup END
+      " }}}
 
       " CSS, SCSS {{{
       augroup FTCss
@@ -387,9 +401,17 @@
       nmap <leader>1 :NERDTreeFind<CR>
       let g:NERDTreeMinimalUI=1
       let g:NERDTreeDirArrows=1
-      let g:NERTreeHighlightCursorLine=1
+      let g:NERDTreeHighlightCursorLine=1
+      let g:NERDTreeIgnore=['\.py[oc]$'] " NOTE: ignore *.pyc,pyo file.
       "}}}
-      "
+
+      " vim-indent-guides{{{
+      set ts=4 sw=4 et
+      let g:indent_guides_start_level = 2
+      let g:indent_guides_guide_size = 1
+      let g:indent_guides_auto_colors = 1
+      let g:indent_guides_enable_on_vim_startup = 1
+      " }}}
 
       " ag {{{
       let g:agprg="ag --column"
