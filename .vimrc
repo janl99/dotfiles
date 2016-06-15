@@ -291,8 +291,8 @@
       " HTML, XML {{{
       augroup FTHtml
         au!
-        autocmd FileType html,xhtml,wml,cf      setlocal ai et sta sw=2 sts=2 " set indent size and stuff
-        autocmd FileType xml,xsd,xslt           setlocal ai et sta sw=2 sts=2 ts=2
+        autocmd FileType html,xhtml,wml,cf      setlocal ai et sta sw=4 sts=4 " set indent size and stuff
+        autocmd FileType xml,xsd,xslt           setlocal ai et sta sw=4 sts=4 ts=4
         autocmd FileType html setlocal iskeyword+=~
       augroup END
       " }}}
@@ -303,7 +303,7 @@
         au BufRead,BufNewFile *.scss.erb set ft=scss  " when erb-ing sccs, use scss code highlighting
         autocmd FileType css,scss  silent! setlocal omnifunc=csscomplete#CompleteCSS " autocomplete function
         autocmd FileType css,scss  setlocal iskeyword+=-
-        autocmd FileType css,scss   setlocal ai et sta sw=2 sts=2
+        autocmd FileType css,scss   setlocal ai et sta sw=4 sts=4
       augroup END
       " }}}
 
